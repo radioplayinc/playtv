@@ -1,0 +1,111 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-display: "Inter Tight", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-sans: "Inter Tight", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-ring-offset-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-elevated: var(--surface-elevated);
+}
+
+/* Apple × Netflix — pure-black monochrome theme */
+:root {
+  --radius: 0.75rem;
+
+  --background: #000000;
+  --foreground: #ffffff;
+
+  --surface: rgba(255,255,255,0.03);
+  --surface-elevated: rgba(255,255,255,0.06);
+
+  --card: rgba(255,255,255,0.03);
+  --card-foreground: #ffffff;
+  --popover: #0a0a0a;
+  --popover-foreground: #ffffff;
+
+  /* Primary = white pill on black (matches landing CTAs) */
+  --primary: #ffffff;
+  --primary-foreground: #000000;
+
+  --secondary: rgba(255,255,255,0.06);
+  --secondary-foreground: #ffffff;
+
+  --muted: rgba(255,255,255,0.06);
+  --muted-foreground: rgba(255,255,255,0.6);
+
+  --accent: #9cdf2f;
+  --accent-foreground: #ffffff;
+
+  --destructive: oklch(0.62 0.24 27);
+  --destructive-foreground: #ffffff;
+
+  --border: rgba(255,255,255,0.10);
+  --input: rgba(255,255,255,0.10);
+  --ring: #ffffff;
+}
+
+.dark {
+  --background: #000000;
+  --foreground: #ffffff;
+}
+
+@layer base {
+  * { border-color: var(--color-border); }
+  html { scroll-behavior: smooth; }
+  html, body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "ss01", "cv11";
+  }
+  h1, h2, h3, .font-display { font-family: var(--font-display); }
+
+  ::selection { background: #ffffff; color: #000000; }
+
+  /* Large TV-friendly focus rings on all interactive elements */
+  a:focus-visible, button:focus-visible, input:focus-visible,
+  textarea:focus-visible, select:focus-visible, [tabindex]:focus-visible {
+    outline: 3px solid var(--color-primary);
+    outline-offset: 3px;
+    border-radius: 8px;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
+  .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  .animate-marquee { animation: marquee 40s linear infinite; }
+  .marquee-pause:hover .animate-marquee { animation-play-state: paused; }
+}
