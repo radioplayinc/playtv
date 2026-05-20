@@ -38,12 +38,12 @@ function Landing() {
 
   useEffect(() => {
     (async () => {
-      const [{ data: t }, { data: c }] = await Promise.all([
+      const [{ data: t, error: te }, { data: c, error: ce }] = await Promise.all([
         supabase.from("tenants").select("id, slug, name, logo_url, primary_color").order("name"),
         supabase.from("channels").select("id, tenant_id, name, logo_url").order("name"),
       ]);
-      setTenants((t as TenantRow[]) ?? []);
-      setChannels((c as ChannelRow[]) ?? []);
+      if (!te) setTenants((t as TenantRow[]) ?? []);
+      if (!ce) setChannels((c as ChannelRow[]) ?? []);
     })();
   }, []);
 
