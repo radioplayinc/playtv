@@ -7,7 +7,7 @@ export const Route = createFileRoute("/api/stripe/webhook")({
     handlers: {
       POST: async ({ request }) => {
         const s = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-          apiVersion: "2024-06-20",
+          apiVersion: "2025-04-30.basil",
         });
         const sig = request.headers.get("stripe-signature") ?? "";
         const raw = await request.text();
@@ -55,7 +55,7 @@ export const Route = createFileRoute("/api/stripe/webhook")({
             .update({
               status,
               current_period_end: new Date(
-                sub.current_period_end * 1000
+                (sub as any).current_period_end ? new Date((sub as any).current_period_end * 1000)
               ).toISOString(),
               updated_at: new Date().toISOString(),
             })

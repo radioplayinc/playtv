@@ -21,7 +21,7 @@ export function MuxUploader({ tenantId, onDone }: { tenantId: string; onDone: ()
       if (!res.ok) throw new Error(res.error);
       await new Promise<void>((resolve, reject) => {
         const xhr = new XMLHttpRequest();
-        xhr.open("PUT", res.uploadUrl);
+        if (!res.uploadUrl) throw new Error("No upload URL returned"); xhr.open("PUT", res.uploadUrl);
         xhr.upload.onprogress = (e) => {
           if (e.lengthComputable) setPct(Math.round((e.loaded / e.total) * 100));
         };
