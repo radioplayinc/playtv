@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { Check } from "lucide-react";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
@@ -33,6 +34,7 @@ const PLATFORMS = ["iOS", "Android", "Apple TV", "Android TV", "Fire TV", "Roku"
 function Landing() {
   const [tenants, setTenants] = useState<TenantRow[]>([]);
   const [channels, setChannels] = useState<ChannelRow[]>([]);
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -43,6 +45,12 @@ function Landing() {
       setTenants((t as TenantRow[]) ?? []);
       setChannels((c as ChannelRow[]) ?? []);
     })();
+  }, []);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 80);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   const tenantsWithChannels = tenants
@@ -81,6 +89,7 @@ function Landing() {
       </svg>
 
       <Nav />
+
       <Hero />
 
       {/* Platform marquee */}
@@ -97,9 +106,10 @@ function Landing() {
         </div>
       </section>
 
+      {/* Features */}
       <Features />
 
-      {/* Brand row */}
+      {/* One platform / brand row */}
       <section className="relative border-t border-white/10 py-28 md:py-36">
         <motion.div {...reveal} className="mx-auto max-w-7xl px-6 md:px-12">
           <div className="text-xs uppercase tracking-[0.3em] text-white/50">Brand DNA</div>
@@ -156,28 +166,53 @@ function Landing() {
         </div>
       </section>
 
-      {/* Free CTA — replaces old pricing section */}
-      <section id="signup" className="relative border-t border-white/10 px-6 py-28 md:px-12 md:py-36">
-        <motion.div {...reveal} className="mx-auto max-w-3xl text-center">
-          <div className="text-xs uppercase tracking-[0.3em] text-white/50">Get Started</div>
-          <h2 className="mt-3 text-4xl font-semibold -tracking-[0.02em] md:text-6xl">Free to get started.</h2>
-          <p className="mt-5 text-lg text-white/60">
-            Sign up today and launch your branded streaming service in minutes. No credit card required.
-          </p>
-          <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-            <Link
-              to="/signup"
-              className="rounded-full px-8 py-4 text-base font-semibold text-black transition-opacity hover:opacity-90"
-              style={{ background: ACCENT }}
-            >
-              Start for free
-            </Link>
-            <Link
-              to="/login"
-              className="rounded-full border border-white/20 px-8 py-4 text-base font-semibold text-white transition-colors hover:border-white/40"
-            >
-              Sign in
-            </Link>
+      {/* Pricing */}
+      <section id="pricing" className="relative border-t border-white/10 px-6 py-28 md:px-12 md:py-36">
+        <motion.div {...reveal} className="mx-auto max-w-7xl">
+          <div className="text-xs uppercase tracking-[0.3em] text-white/50">Pricing</div>
+          <h2 className="mt-3 text-4xl font-semibold -tracking-[0.02em] md:text-6xl">Simple pricing.</h2>
+          <p className="mt-5 max-w-2xl text-white/60">Start free. Scale as you grow. No surprises.</p>
+
+          <div className="mt-14 grid gap-4 md:grid-cols-3">
+            {[
+              { name: "Starter", price: "$0", desc: "1 tenant, 50 titles, watermark", featured: false, features: ["1 tenant", "50 titles", "Watermarked player"] },
+              { name: "Studio", price: "$199", suffix: "/mo", desc: "5 tenants, unlimited titles, FAST channels", featured: true, features: ["5 tenants", "Unlimited titles", "FAST channels", "Custom domains"] },
+              { name: "Enterprise", price: "Custom", desc: "Unlimited tenants, native apps, SSO", featured: false, features: ["Unlimited tenants", "Native TV apps", "SSO + SAML", "Priority support"] },
+            ].map((p) => (
+              <div
+                key={p.name}
+                className={`relative rounded-2xl border bg-black p-8 ${
+                  p.featured
+                    ? "border-white/30 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.1)]"
+                    : "border-white/10"
+                }`}
+              >
+                {p.featured && (
+                  <div className="absolute -top-3 left-8 rounded-full border border-white/20 bg-black px-3 py-1 text-xs uppercase tracking-[0.2em] text-white/80">
+                    Most popular
+                  </div>
+                )}
+                <div className="text-sm uppercase tracking-[0.2em] text-white/50">{p.name}</div>
+                <div className="mt-5 flex items-baseline gap-1">
+                  <span className="text-5xl font-semibold -tracking-[0.02em]">{p.price}</span>
+                  {p.suffix && <span className="text-base text-white/50">{p.suffix}</span>}
+                </div>
+                <p className="mt-3 text-sm text-white/60">{p.desc}</p>
+                <ul className="mt-6 space-y-3">
+                  {p.features.map((f) => (
+                    <li key={f} className="flex items-center gap-2.5 text-sm text-white/80">
+                      <Check className="h-4 w-4 text-white/70" /> {f}
+                    </li>
+                  ))}
+                </ul>
+                <button
+                  disabled
+                  className="mt-8 w-full cursor-not-allowed rounded-full border border-white/10 px-4 py-3 text-sm text-white/40"
+                >
+                  coming soon
+                </button>
+              </div>
+            ))}
           </div>
         </motion.div>
       </section>
