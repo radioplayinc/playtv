@@ -6,7 +6,7 @@ import { useTenant } from "@/contexts/TenantContext";
 import { AppShell } from "@/components/AppShell";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
-import { Plus, Trash2, Upload, Star, Tv as TvIcon } from "lucide-react";
+import { Plus, Trash2, Upload, Star, Tv as TvIcon, Edit } from "lucide-react";
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger,
 } from "@/components/ui/dialog";
@@ -18,6 +18,10 @@ export const Route = createFileRoute("/_authenticated/dashboard/")({ component: 
 interface Tenant {
   id: string; name: string; slug: string; logo_url: string | null; icon_url: string | null;
   primary_color: string; accent_color: string;
+  contact_email: string | null; contact_phone: string | null; contact_website: string | null;
+  social_facebook: string | null; social_twitter: string | null; social_instagram: string | null; social_youtube: string | null;
+  platform_web: boolean; platform_roku: boolean; platform_firetv: boolean;
+  platform_appletv: boolean; platform_androidtv: boolean; platform_ios: boolean; platform_android: boolean;
 }
 interface Content {
   id: string; tenant_id: string; title: string; description: string | null;
@@ -124,6 +128,20 @@ function BrandingTab({ tenant, onSaved }: { tenant: Tenant; onSaved: () => Promi
   const [accent, setAccent] = useState(tenant.accent_color);
   const [logoUrl, setLogoUrl] = useState(tenant.logo_url ?? "");
   const [iconUrl, setIconUrl] = useState(tenant.icon_url ?? "");
+  const [contactEmail, setContactEmail] = useState(tenant.contact_email ?? "");
+  const [contactPhone, setContactPhone] = useState(tenant.contact_phone ?? "");
+  const [contactWebsite, setContactWebsite] = useState(tenant.contact_website ?? "");
+  const [socialFacebook, setSocialFacebook] = useState(tenant.social_facebook ?? "");
+  const [socialTwitter, setSocialTwitter] = useState(tenant.social_twitter ?? "");
+  const [socialInstagram, setSocialInstagram] = useState(tenant.social_instagram ?? "");
+  const [socialYoutube, setSocialYoutube] = useState(tenant.social_youtube ?? "");
+  const [platformWeb, setPlatformWeb] = useState(tenant.platform_web ?? true);
+  const [platformRoku, setPlatformRoku] = useState(tenant.platform_roku ?? false);
+  const [platformFiretv, setPlatformFiretv] = useState(tenant.platform_firetv ?? false);
+  const [platformAppletv, setPlatformAppletv] = useState(tenant.platform_appletv ?? false);
+  const [platformAndroidtv, setPlatformAndroidtv] = useState(tenant.platform_androidtv ?? false);
+  const [platformIos, setPlatformIos] = useState(tenant.platform_ios ?? false);
+  const [platformAndroid, setPlatformAndroid] = useState(tenant.platform_android ?? false);
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
@@ -144,7 +162,27 @@ function BrandingTab({ tenant, onSaved }: { tenant: Tenant; onSaved: () => Promi
     setBusy(true);
     const { error } = await supabase
       .from("tenants")
-      .update({ name, primary_color: primary, accent_color: accent, logo_url: logoUrl || null, icon_url: iconUrl || null })
+      .update({
+        name,
+        primary_color: primary,
+        accent_color: accent,
+        logo_url: logoUrl || null,
+        icon_url: iconUrl || null,
+        contact_email: contactEmail || null,
+        contact_phone: contactPhone || null,
+        contact_website: contactWebsite || null,
+        social_facebook: socialFacebook || null,
+        social_twitter: socialTwitter || null,
+        social_instagram: socialInstagram || null,
+        social_youtube: socialYoutube || null,
+        platform_web: platformWeb,
+        platform_roku: platformRoku,
+        platform_firetv: platformFiretv,
+        platform_appletv: platformAppletv,
+        platform_androidtv: platformAndroidtv,
+        platform_ios: platformIos,
+        platform_android: platformAndroid,
+      })
       .eq("id", tenant.id);
     setBusy(false);
     if (error) return toast.error(error.message);
@@ -178,6 +216,57 @@ function BrandingTab({ tenant, onSaved }: { tenant: Tenant; onSaved: () => Promi
           </label>
           {iconUrl && <img src={iconUrl} alt="" className="mt-2 h-12 w-12 rounded bg-surface p-1 object-contain" />}
         </div>
+        
+        <div className="space-y-4 rounded-lg border border-border bg-background p-4">
+          <h4 className="text-sm font-semibold">Contact Information</h4>
+          <Field label="Contact email" value={contactEmail} onChange={setContactEmail} type="email" placeholder="contact@example.com" />
+          <Field label="Contact phone" value={contactPhone} onChange={setContactPhone} placeholder="+1 (555) 000-0000" />
+          <Field label="Website" value={contactWebsite} onChange={setContactWebsite} placeholder="https://example.com" />
+        </div>
+        
+        <div className="space-y-4 rounded-lg border border-border bg-background p-4">
+          <h4 className="text-sm font-semibold">Social Media</h4>
+          <Field label="Facebook URL" value={socialFacebook} onChange={setSocialFacebook} placeholder="https://facebook.com/..." />
+          <Field label="Twitter/X URL" value={socialTwitter} onChange={setSocialTwitter} placeholder="https://twitter.com/..." />
+          <Field label="Instagram URL" value={socialInstagram} onChange={setSocialInstagram} placeholder="https://instagram.com/..." />
+          <Field label="YouTube URL" value={socialYoutube} onChange={setSocialYoutube} placeholder="https://youtube.com/..." />
+        </div>
+        
+        <div className="space-y-3 rounded-lg border border-border bg-background p-4">
+          <h4 className="text-sm font-semibold">Platform Availability</h4>
+          <p className="text-xs text-muted-foreground">Select which platforms your app is available on</p>
+          <div className="grid grid-cols-2 gap-3">
+            <label className="flex items-center gap-2">
+              <input type="checkbox" checked={platformWeb} onChange={(e) => setPlatformWeb(e.target.checked)} className="h-4 w-4 rounded border-border" />
+              <span className="text-sm">Web</span>
+            </label>
+            <label className="flex items-center gap-2">
+              <input type="checkbox" checked={platformRoku} onChange={(e) => setPlatformRoku(e.target.checked)} className="h-4 w-4 rounded border-border" />
+              <span className="text-sm">Roku</span>
+            </label>
+            <label className="flex items-center gap-2">
+              <input type="checkbox" checked={platformFiretv} onChange={(e) => setPlatformFiretv(e.target.checked)} className="h-4 w-4 rounded border-border" />
+              <span className="text-sm">Fire TV</span>
+            </label>
+            <label className="flex items-center gap-2">
+              <input type="checkbox" checked={platformAppletv} onChange={(e) => setPlatformAppletv(e.target.checked)} className="h-4 w-4 rounded border-border" />
+              <span className="text-sm">Apple TV</span>
+            </label>
+            <label className="flex items-center gap-2">
+              <input type="checkbox" checked={platformAndroidtv} onChange={(e) => setPlatformAndroidtv(e.target.checked)} className="h-4 w-4 rounded border-border" />
+              <span className="text-sm">Android TV</span>
+            </label>
+            <label className="flex items-center gap-2">
+              <input type="checkbox" checked={platformIos} onChange={(e) => setPlatformIos(e.target.checked)} className="h-4 w-4 rounded border-border" />
+              <span className="text-sm">iOS</span>
+            </label>
+            <label className="flex items-center gap-2">
+              <input type="checkbox" checked={platformAndroid} onChange={(e) => setPlatformAndroid(e.target.checked)} className="h-4 w-4 rounded border-border" />
+              <span className="text-sm">Android</span>
+            </label>
+          </div>
+        </div>
+        
         <button disabled={busy} onClick={save} className="w-full rounded-lg bg-primary py-2.5 font-semibold text-primary-foreground disabled:opacity-50">
           {busy ? "Saving…" : "Save branding"}
         </button>
@@ -211,6 +300,7 @@ function ContentTab({ tenantId }: { tenantId: string }) {
   const [open, setOpen] = useState(false);
   const [uploadOpen, setUploadOpen] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [editingContent, setEditingContent] = useState<Content | null>(null);
 
   const load = async () => {
     setLoading(true);
@@ -244,15 +334,15 @@ function ContentTab({ tenantId }: { tenantId: string }) {
             </DialogContent>
           </Dialog>
 
-          <Dialog open={open} onOpenChange={setOpen}>
+          <Dialog open={open} onOpenChange={(o) => { setOpen(o); if (!o) setEditingContent(null); }}>
             <DialogTrigger asChild>
               <button className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2.5 font-semibold text-primary-foreground">
                 <Plus className="h-4 w-4" /> Add title
               </button>
             </DialogTrigger>
             <DialogContent className="max-h-[90vh] overflow-y-auto bg-card">
-              <DialogHeader><DialogTitle>Add new title</DialogTitle></DialogHeader>
-              <ContentForm tenantId={tenantId} onSaved={() => { setOpen(false); load(); }} />
+              <DialogHeader><DialogTitle>{editingContent ? "Edit title" : "Add new title"}</DialogTitle></DialogHeader>
+              <ContentForm tenantId={tenantId} editContent={editingContent} onSaved={() => { setOpen(false); setEditingContent(null); load(); }} />
             </DialogContent>
           </Dialog>
         </div>
@@ -287,9 +377,14 @@ function ContentTab({ tenantId }: { tenantId: string }) {
             <div className="p-3">
               <h4 className="truncate font-semibold">{c.title}</h4>
               <p className="text-xs text-muted-foreground">{c.category}</p>
-              <button onClick={() => remove(c.id)} className="mt-2 text-xs text-muted-foreground hover:text-destructive inline-flex items-center gap-1">
-                <Trash2 className="h-3 w-3" /> Delete
-              </button>
+              <div className="mt-2 flex items-center gap-3">
+                <button onClick={() => { setEditingContent(c); setOpen(true); }} className="text-xs text-muted-foreground hover:text-primary inline-flex items-center gap-1">
+                  <Edit className="h-3 w-3" /> Edit
+                </button>
+                <button onClick={() => remove(c.id)} className="text-xs text-muted-foreground hover:text-destructive inline-flex items-center gap-1">
+                  <Trash2 className="h-3 w-3" /> Delete
+                </button>
+              </div>
             </div>
           </div>
         ))}
@@ -298,14 +393,17 @@ function ContentTab({ tenantId }: { tenantId: string }) {
   );
 }
 
-function ContentForm({ tenantId, onSaved }: { tenantId: string; onSaved: () => void }) {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [category, setCategory] = useState("General");
-  const [hlsUrl, setHlsUrl] = useState("https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8");
-  const [thumbnailUrl, setThumbnailUrl] = useState("");
-  const [heroUrl, setHeroUrl] = useState("");
-  const [trending, setTrending] = useState(false);
+function ContentForm({ tenantId, onSaved, editContent }: { tenantId: string; onSaved: () => void; editContent?: any }) {
+  const [title, setTitle] = useState(editContent?.title ?? "");
+  const [description, setDescription] = useState(editContent?.description ?? "");
+  const [category, setCategory] = useState(editContent?.category ?? "General");
+  const [streamSource, setStreamSource] = useState<"hls" | "external">(editContent?.external_stream_url ? "external" : "hls");
+  const [hlsUrl, setHlsUrl] = useState(editContent?.hls_url ?? "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8");
+  const [externalUrl, setExternalUrl] = useState(editContent?.external_stream_url ?? "");
+  const [externalType, setExternalType] = useState<string>(editContent?.external_stream_type ?? "google_drive");
+  const [thumbnailUrl, setThumbnailUrl] = useState(editContent?.thumbnail_url ?? "");
+  const [heroUrl, setHeroUrl] = useState(editContent?.hero_url ?? "");
+  const [trending, setTrending] = useState(editContent?.is_trending ?? false);
   const [busy, setBusy] = useState(false);
 
   const upload = async (file: File, bucket: string, setter: (s: string) => void) => {
@@ -319,14 +417,36 @@ function ContentForm({ tenantId, onSaved }: { tenantId: string; onSaved: () => v
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     setBusy(true);
-    const { error } = await supabase.from("content").insert({
-      tenant_id: tenantId, title, description, category,
-      hls_url: hlsUrl || null, thumbnail_url: thumbnailUrl || null,
-      hero_url: heroUrl || thumbnailUrl || null, is_trending: trending,
-    });
+    
+    const payload: any = {
+      tenant_id: tenantId,
+      title,
+      description,
+      category,
+      thumbnail_url: thumbnailUrl || null,
+      hero_url: heroUrl || thumbnailUrl || null,
+      is_trending: trending,
+    };
+    
+    // Handle stream source
+    if (streamSource === "external") {
+      payload.external_stream_url = externalUrl || null;
+      payload.external_stream_type = externalType;
+      payload.hls_url = null;
+    } else {
+      payload.hls_url = hlsUrl || null;
+      payload.external_stream_url = null;
+      payload.external_stream_type = null;
+    }
+    
+    const query = editContent
+      ? supabase.from("content").update(payload).eq("id", editContent.id)
+      : supabase.from("content").insert(payload);
+    
+    const { error } = await query;
     setBusy(false);
     if (error) return toast.error(error.message);
-    toast.success("Title added");
+    toast.success(editContent ? "Title updated" : "Title added");
     onSaved();
   };
 
@@ -339,7 +459,43 @@ function ContentForm({ tenantId, onSaved }: { tenantId: string; onSaved: () => v
           className="mt-1.5 w-full rounded-lg border border-border bg-background px-3 py-2.5 outline-none focus:border-primary" />
       </label>
       <Field label="Category" value={category} onChange={setCategory} />
-      <Field label="HLS stream URL (.m3u8)" value={hlsUrl} onChange={setHlsUrl} placeholder="https://…/playlist.m3u8" />
+      
+      {/* Stream source selector */}
+      <div className="space-y-3">
+        <label className="block">
+          <span className="text-sm font-medium text-muted-foreground">Stream source</span>
+          <select value={streamSource} onChange={(e) => setStreamSource(e.target.value as "hls" | "external")}
+            className="mt-1.5 w-full rounded-lg border border-border bg-background px-3 py-2.5 outline-none focus:border-primary">
+            <option value="hls">HLS URL (Self-hosted or CDN)</option>
+            <option value="external">External (Google Drive, Dropbox, etc.)</option>
+          </select>
+        </label>
+        
+        {streamSource === "hls" ? (
+          <Field label="HLS stream URL (.m3u8)" value={hlsUrl} onChange={setHlsUrl} placeholder="https://…/playlist.m3u8" />
+        ) : (
+          <>
+            <label className="block">
+              <span className="text-sm font-medium text-muted-foreground">External service</span>
+              <select value={externalType} onChange={(e) => setExternalType(e.target.value)}
+                className="mt-1.5 w-full rounded-lg border border-border bg-background px-3 py-2.5 outline-none focus:border-primary">
+                <option value="google_drive">Google Drive</option>
+                <option value="dropbox">Dropbox</option>
+                <option value="icloud">iCloud Drive</option>
+                <option value="onedrive">OneDrive</option>
+                <option value="direct">Direct URL</option>
+              </select>
+            </label>
+            <Field label="External URL" value={externalUrl} onChange={setExternalUrl} 
+              placeholder="https://drive.google.com/file/d/..." required />
+            <p className="text-xs text-muted-foreground">
+              📌 Paste the shareable link from {externalType === "google_drive" ? "Google Drive" : externalType === "dropbox" ? "Dropbox" : externalType === "icloud" ? "iCloud" : externalType === "onedrive" ? "OneDrive" : "your source"}. 
+              Make sure the link is publicly accessible.
+            </p>
+          </>
+        )}
+      </div>
+      
       <UploadField label="Thumbnail (poster, 2:3)" url={thumbnailUrl} onPick={(f) => upload(f, "content-thumbnails", setThumbnailUrl)} />
       <UploadField label="Hero image (16:9, optional)" url={heroUrl} onPick={(f) => upload(f, "content-thumbnails", setHeroUrl)} />
       <label className="flex items-center gap-2">
@@ -347,7 +503,7 @@ function ContentForm({ tenantId, onSaved }: { tenantId: string; onSaved: () => v
         <span className="text-sm">Mark as trending</span>
       </label>
       <button disabled={busy} className="w-full rounded-lg bg-primary py-2.5 font-semibold text-primary-foreground disabled:opacity-50">
-        {busy ? "Saving…" : "Add title"}
+        {busy ? "Saving…" : editContent ? "Update title" : "Add title"}
       </button>
     </form>
   );

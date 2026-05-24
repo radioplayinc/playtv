@@ -2,8 +2,9 @@ import { createFileRoute, Link, useNavigate, useParams } from "@tanstack/react-r
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
-import { Play, Plus, Check } from "lucide-react";
+import { Play, Plus, Check, Info as InfoIcon } from "lucide-react";
 import { toast } from "sonner";
+import { ChannelInfoMenu } from "@/components/app/ChannelInfoMenu";
 
 export const Route = createFileRoute("/app/title/$id")({ component: TitlePage });
 
@@ -58,6 +59,12 @@ function TitlePage() {
             {inList ? <Check className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
             {inList ? "In My List" : "Add to My List"}
           </button>
+          <ChannelInfoMenu contentId={id}>
+            <button className="inline-flex w-full sm:w-auto justify-center items-center gap-2 rounded-lg border border-border bg-surface px-6 py-3 font-semibold hover:bg-background">
+              <InfoIcon className="h-4 w-4" />
+              Info
+            </button>
+          </ChannelInfoMenu>
         </div>
       </div>
     </div>

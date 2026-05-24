@@ -98,6 +98,8 @@ export type Database = {
           created_at: string
           description: string | null
           duration_seconds: number | null
+          external_stream_type: string | null
+          external_stream_url: string | null
           hero_url: string | null
           hls_url: string | null
           id: string
@@ -118,6 +120,8 @@ export type Database = {
           created_at?: string
           description?: string | null
           duration_seconds?: number | null
+          external_stream_type?: string | null
+          external_stream_url?: string | null
           hero_url?: string | null
           hls_url?: string | null
           id?: string
@@ -138,6 +142,8 @@ export type Database = {
           created_at?: string
           description?: string | null
           duration_seconds?: number | null
+          external_stream_type?: string | null
+          external_stream_url?: string | null
           hero_url?: string | null
           hls_url?: string | null
           id?: string
@@ -158,6 +164,41 @@ export type Database = {
             columns: ["tenant_id"]
             isOneToOne: false
             referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      content_markers: {
+        Row: {
+          content_id: string
+          created_at: string
+          id: string
+          label: string
+          marker_type: string
+          timestamp_seconds: number
+        }
+        Insert: {
+          content_id: string
+          created_at?: string
+          id?: string
+          label: string
+          marker_type?: string
+          timestamp_seconds: number
+        }
+        Update: {
+          content_id?: string
+          created_at?: string
+          id?: string
+          label?: string
+          marker_type?: string
+          timestamp_seconds?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "content_markers_content_id_fkey"
+            columns: ["content_id"]
+            isOneToOne: false
+            referencedRelation: "content"
             referencedColumns: ["id"]
           },
         ]
@@ -241,35 +282,136 @@ export type Database = {
       tenants: {
         Row: {
           accent_color: string
+          app_url_android: string | null
+          app_url_androidtv: string | null
+          app_url_appletv: string | null
+          app_url_firetv: string | null
+          app_url_ios: string | null
+          app_url_roku: string | null
+          contact_email: string | null
+          contact_phone: string | null
+          contact_website: string | null
           created_at: string
           icon_url: string | null
           id: string
           logo_url: string | null
           name: string
+          platform_android: boolean
+          platform_androidtv: boolean
+          platform_appletv: boolean
+          platform_firetv: boolean
+          platform_ios: boolean
+          platform_roku: boolean
+          platform_web: boolean
           primary_color: string
+          privacy_policy_url: string | null
           slug: string
+          social_facebook: string | null
+          social_instagram: string | null
+          social_twitter: string | null
+          social_youtube: string | null
+          terms_of_service_url: string | null
         }
         Insert: {
           accent_color?: string
+          app_url_android?: string | null
+          app_url_androidtv?: string | null
+          app_url_appletv?: string | null
+          app_url_firetv?: string | null
+          app_url_ios?: string | null
+          app_url_roku?: string | null
+          contact_email?: string | null
+          contact_phone?: string | null
+          contact_website?: string | null
           created_at?: string
           icon_url?: string | null
           id?: string
           logo_url?: string | null
           name: string
+          platform_android?: boolean
+          platform_androidtv?: boolean
+          platform_appletv?: boolean
+          platform_firetv?: boolean
+          platform_ios?: boolean
+          platform_roku?: boolean
+          platform_web?: boolean
           primary_color?: string
+          privacy_policy_url?: string | null
           slug: string
+          social_facebook?: string | null
+          social_instagram?: string | null
+          social_twitter?: string | null
+          social_youtube?: string | null
+          terms_of_service_url?: string | null
         }
         Update: {
           accent_color?: string
+          app_url_android?: string | null
+          app_url_androidtv?: string | null
+          app_url_appletv?: string | null
+          app_url_firetv?: string | null
+          app_url_ios?: string | null
+          app_url_roku?: string | null
+          contact_email?: string | null
+          contact_phone?: string | null
+          contact_website?: string | null
           created_at?: string
           icon_url?: string | null
           id?: string
           logo_url?: string | null
           name?: string
+          platform_android?: boolean
+          platform_androidtv?: boolean
+          platform_appletv?: boolean
+          platform_firetv?: boolean
+          platform_ios?: boolean
+          platform_roku?: boolean
+          platform_web?: boolean
           primary_color?: string
+          privacy_policy_url?: string | null
           slug?: string
+          social_facebook?: string | null
+          social_instagram?: string | null
+          social_twitter?: string | null
+          social_youtube?: string | null
+          terms_of_service_url?: string | null
         }
         Relationships: []
+      }
+      user_notes: {
+        Row: {
+          content_id: string
+          created_at: string
+          id: string
+          note_text: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          content_id: string
+          created_at?: string
+          id?: string
+          note_text: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          content_id?: string
+          created_at?: string
+          id?: string
+          note_text?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_notes_content_id_fkey"
+            columns: ["content_id"]
+            isOneToOne: false
+            referencedRelation: "content"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_roles: {
         Row: {

@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { PaywallGate } from "@/components/PaywallGate";
 import { ArrowLeft, Play, Pause, Volume2, VolumeX, Maximize, PictureInPicture, RotateCcw, RotateCw, AlertTriangle } from "lucide-react";
+import { convertExternalUrl } from "@/lib/externalStreamUtils";
 
 export const Route = createFileRoute("/_authenticated/watch/$id")({ component: WatchPage });
 
@@ -31,7 +32,20 @@ function WatchPage() {
   useEffect(() => {
     const video = videoRef.current;
     if (!video || !content) return;
-    const src = content.hls_url ?? content.mp4_url;
+    
+    // Determine stream source
+    let src: string | null = null;
+    let useExternalDirect = false;
+    
+    if (content.external_stream_url) {
+      // Use external streaming URL
+      src = convertExternalUrl(content.external_stream_url, content.external_stream_type);
+      useExternalDirect = true;
+    } else {
+      // Use HLS or MP4
+      src = content.hls_url ?? content.mp4_url;
+    }
+    
     if (!src) return;
 
     setStreamError(null);
@@ -46,7 +60,7 @@ function WatchPage() {
     };
 
     let hls: Hls | null = null;
-    if (content.hls_url && Hls.isSupported()) {
+    if (!useExternalDirect && content.hls_url && Hls.isSupported()) {
       hls = new Hls({ enableWorker: true });
       hls.loadSource(proxify(content.hls_url));
       hls.attachMedia(video);
@@ -61,7 +75,8 @@ function WatchPage() {
         setStreamError(msg);
       });
     } else {
-      video.src = content.hls_url ? proxify(content.hls_url) : src;
+      // For external URLs or direct MP4, use native video player
+      video.src = useExternalDirect ? src : (content.hls_url ? proxify(content.hls_url) : src);
     }
     const onVideoErr = () => {
       if (!hls) setStreamError("This channel is currently unavailable.");
