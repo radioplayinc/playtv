@@ -22,6 +22,7 @@ import { Route as AppIndexRouteImport } from './routes/app/index'
 import { Route as AppSearchRouteImport } from './routes/app/search'
 import { Route as AppMyListRouteImport } from './routes/app/my-list'
 import { Route as AppLiveRouteImport } from './routes/app/live'
+import { Route as AppScenesRouteImport } from './routes/app/scenes'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedDashboardIndexRouteImport } from './routes/_authenticated/dashboard/index'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin/index'
@@ -95,6 +96,11 @@ const AppMyListRoute = AppMyListRouteImport.update({
 const AppLiveRoute = AppLiveRouteImport.update({
   id: '/live',
   path: '/live',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppScenesRoute = AppScenesRouteImport.update({
+  id: '/scenes',
+  path: '/scenes',
   getParentRoute: () => AppRoute,
 } as any)
 const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
@@ -190,6 +196,7 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/app/live': typeof AppLiveRoute
   '/app/my-list': typeof AppMyListRoute
+  '/app/scenes': typeof AppScenesRoute
   '/app/search': typeof AppSearchRoute
   '/app/': typeof AppIndexRoute
   '/watch/$id': typeof AuthenticatedWatchIdRoute
@@ -217,6 +224,7 @@ export interface FileRoutesByTo {
   '/signup': typeof SignupRoute
   '/app/live': typeof AppLiveRoute
   '/app/my-list': typeof AppMyListRoute
+  '/app/scenes': typeof AppScenesRoute
   '/app/search': typeof AppSearchRoute
   '/app': typeof AppIndexRoute
   '/watch/$id': typeof AuthenticatedWatchIdRoute
@@ -247,6 +255,7 @@ export interface FileRoutesById {
   '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
   '/app/live': typeof AppLiveRoute
   '/app/my-list': typeof AppMyListRoute
+  '/app/scenes': typeof AppScenesRoute
   '/app/search': typeof AppSearchRoute
   '/app/': typeof AppIndexRoute
   '/_authenticated/watch/$id': typeof AuthenticatedWatchIdRoute
@@ -278,6 +287,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/app/live'
     | '/app/my-list'
+    | '/app/scenes'
     | '/app/search'
     | '/app/'
     | '/watch/$id'
@@ -305,6 +315,7 @@ export interface FileRouteTypes {
     | '/signup'
     | '/app/live'
     | '/app/my-list'
+    | '/app/scenes'
     | '/app/search'
     | '/app'
     | '/watch/$id'
@@ -334,6 +345,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin'
     | '/app/live'
     | '/app/my-list'
+    | '/app/scenes'
     | '/app/search'
     | '/app/'
     | '/_authenticated/watch/$id'
@@ -472,6 +484,13 @@ declare module '@tanstack/react-router' {
       path: '/live'
       fullPath: '/app/live'
       preLoaderRoute: typeof AppLiveRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/scenes': {
+      id: '/app/scenes'
+      path: '/scenes'
+      fullPath: '/app/scenes'
+      preLoaderRoute: typeof AppScenesRouteImport
       parentRoute: typeof AppRoute
     }
     '/_authenticated/admin': {
@@ -619,6 +638,7 @@ const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
 interface AppRouteChildren {
   AppLiveRoute: typeof AppLiveRoute
   AppMyListRoute: typeof AppMyListRoute
+  AppScenesRoute: typeof AppScenesRoute
   AppSearchRoute: typeof AppSearchRoute
   AppIndexRoute: typeof AppIndexRoute
   AppTitleIdRoute: typeof AppTitleIdRoute
@@ -627,6 +647,7 @@ interface AppRouteChildren {
 const AppRouteChildren: AppRouteChildren = {
   AppLiveRoute: AppLiveRoute,
   AppMyListRoute: AppMyListRoute,
+  AppScenesRoute: AppScenesRoute,
   AppSearchRoute: AppSearchRoute,
   AppIndexRoute: AppIndexRoute,
   AppTitleIdRoute: AppTitleIdRoute,
