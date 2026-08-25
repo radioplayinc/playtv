@@ -1,7 +1,15 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "tanstack-start-app",
+  "name": "playtv",
   "compatibility_date": "2025-09-24",
   "compatibility_flags": ["nodejs_compat"],
   "main": "@tanstack/react-start/server-entry",
+
+  // Custom domain — Cloudflare auto-manages the CNAME once the zone is on CF
+  "custom_domains": [
+    { "pattern": "playtv.radioplayinc.com" }
+  ],
+
+  // Workers.dev subdomain stays available as a fallback during DNS migration
+  "workers_dev": true
 }
