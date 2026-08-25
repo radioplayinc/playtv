@@ -14,30 +14,25 @@ import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as RedirectRouteImport } from './routes/redirect'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
+import { Route as BlastRouteImport } from './routes/blast'
 import { Route as AppRouteImport } from './routes/app'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as BlastRouteImport } from './routes/blast'
+import { Route as BlastIndexRouteImport } from './routes/blast/index'
 import { Route as AppIndexRouteImport } from './routes/app/index'
+import { Route as BlastDashboardRouteImport } from './routes/blast/dashboard'
+import { Route as BlastCreateRouteImport } from './routes/blast/create'
+import { Route as BlastCampaignsRouteImport } from './routes/blast/campaigns'
 import { Route as AppSearchRouteImport } from './routes/app/search'
+import { Route as AppScenesRouteImport } from './routes/app/scenes'
 import { Route as AppMyListRouteImport } from './routes/app/my-list'
 import { Route as AppLiveRouteImport } from './routes/app/live'
-import { Route as AppScenesRouteImport } from './routes/app/scenes'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedDashboardIndexRouteImport } from './routes/_authenticated/dashboard/index'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin/index'
-import { Route as AppTitleIdRouteImport } from './routes/app/title.$id'
-import { Route as ApiStripeWebhookRouteImport } from './routes/api/stripe/webhook'
-import { Route as ApiPublicRokuFeedRouteImport } from './routes/api/public/roku-feed'
-import { Route as ApiPublicGeoRouteImport } from './routes/api/public/geo'
-import { Route as ApiMuxWebhookRouteImport } from './routes/api/mux/webhook'
-import { Route as AuthenticatedWatchIdRouteImport } from './routes/_authenticated/watch.$id'
-import { Route as ApiPublicHlsSplatRouteImport } from './routes/api/public/hls.$'
-import { Route as BlastIndexRouteImport } from './routes/blast/index'
-import { Route as BlastCampaignsRouteImport } from './routes/blast/campaigns'
 import { Route as BlastCampaignsIdRouteImport } from './routes/blast/campaigns.$id'
-import { Route as BlastDashboardRouteImport } from './routes/blast/dashboard'
-import { Route as BlastCreateRouteImport } from './routes/blast/create'
+import { Route as AppTitleIdRouteImport } from './routes/app/title.$id'
+import { Route as AuthenticatedWatchIdRouteImport } from './routes/_authenticated/watch.$id'
 
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
@@ -64,6 +59,11 @@ const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
   path: '/forgot-password',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BlastRoute = BlastRouteImport.update({
+  id: '/blast',
+  path: '/blast',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AppRoute = AppRouteImport.update({
   id: '/app',
   path: '/app',
@@ -78,14 +78,39 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BlastIndexRoute = BlastIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => BlastRoute,
+} as any)
 const AppIndexRoute = AppIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AppRoute,
 } as any)
+const BlastDashboardRoute = BlastDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => BlastRoute,
+} as any)
+const BlastCreateRoute = BlastCreateRouteImport.update({
+  id: '/create',
+  path: '/create',
+  getParentRoute: () => BlastRoute,
+} as any)
+const BlastCampaignsRoute = BlastCampaignsRouteImport.update({
+  id: '/campaigns',
+  path: '/campaigns',
+  getParentRoute: () => BlastRoute,
+} as any)
 const AppSearchRoute = AppSearchRouteImport.update({
   id: '/search',
   path: '/search',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppScenesRoute = AppScenesRouteImport.update({
+  id: '/scenes',
+  path: '/scenes',
   getParentRoute: () => AppRoute,
 } as any)
 const AppMyListRoute = AppMyListRouteImport.update({
@@ -96,11 +121,6 @@ const AppMyListRoute = AppMyListRouteImport.update({
 const AppLiveRoute = AppLiveRouteImport.update({
   id: '/live',
   path: '/live',
-  getParentRoute: () => AppRoute,
-} as any)
-const AppScenesRoute = AppScenesRouteImport.update({
-  id: '/scenes',
-  path: '/scenes',
   getParentRoute: () => AppRoute,
 } as any)
 const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
@@ -119,75 +139,26 @@ const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AuthenticatedAdminRoute,
 } as any)
+const BlastCampaignsIdRoute = BlastCampaignsIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => BlastCampaignsRoute,
+} as any)
 const AppTitleIdRoute = AppTitleIdRouteImport.update({
   id: '/title/$id',
   path: '/title/$id',
   getParentRoute: () => AppRoute,
-} as any)
-const ApiStripeWebhookRoute = ApiStripeWebhookRouteImport.update({
-  id: '/api/stripe/webhook',
-  path: '/api/stripe/webhook',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiPublicRokuFeedRoute = ApiPublicRokuFeedRouteImport.update({
-  id: '/api/public/roku-feed',
-  path: '/api/public/roku-feed',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiPublicGeoRoute = ApiPublicGeoRouteImport.update({
-  id: '/api/public/geo',
-  path: '/api/public/geo',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiMuxWebhookRoute = ApiMuxWebhookRouteImport.update({
-  id: '/api/mux/webhook',
-  path: '/api/mux/webhook',
-  getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedWatchIdRoute = AuthenticatedWatchIdRouteImport.update({
   id: '/watch/$id',
   path: '/watch/$id',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
-const ApiPublicHlsSplatRoute = ApiPublicHlsSplatRouteImport.update({
-  id: '/api/public/hls/$',
-  path: '/api/public/hls/$',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const BlastRoute = BlastRouteImport.update({
-  id: '/blast',
-  path: '/blast',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const BlastIndexRoute = BlastIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => BlastRoute,
-} as any)
-const BlastCampaignsRoute = BlastCampaignsRouteImport.update({
-  id: '/campaigns',
-  path: '/campaigns',
-  getParentRoute: () => BlastRoute,
-} as any)
-const BlastCampaignsIdRoute = BlastCampaignsIdRouteImport.update({
-  id: '/campaigns/$id',
-  path: '/campaigns/$id',
-  getParentRoute: () => BlastRoute,
-} as any)
-const BlastDashboardRoute = BlastDashboardRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
-  getParentRoute: () => BlastRoute,
-} as any)
-const BlastCreateRoute = BlastCreateRouteImport.update({
-  id: '/create',
-  path: '/create',
-  getParentRoute: () => BlastRoute,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/app': typeof AppRouteWithChildren
+  '/blast': typeof BlastRouteWithChildren
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
   '/redirect': typeof RedirectRoute
@@ -198,22 +169,16 @@ export interface FileRoutesByFullPath {
   '/app/my-list': typeof AppMyListRoute
   '/app/scenes': typeof AppScenesRoute
   '/app/search': typeof AppSearchRoute
+  '/blast/campaigns': typeof BlastCampaignsRouteWithChildren
+  '/blast/create': typeof BlastCreateRoute
+  '/blast/dashboard': typeof BlastDashboardRoute
   '/app/': typeof AppIndexRoute
+  '/blast/': typeof BlastIndexRoute
   '/watch/$id': typeof AuthenticatedWatchIdRoute
-  '/api/mux/webhook': typeof ApiMuxWebhookRoute
-  '/api/public/geo': typeof ApiPublicGeoRoute
-  '/api/public/roku-feed': typeof ApiPublicRokuFeedRoute
-  '/api/stripe/webhook': typeof ApiStripeWebhookRoute
   '/app/title/$id': typeof AppTitleIdRoute
+  '/blast/campaigns/$id': typeof BlastCampaignsIdRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
   '/dashboard/': typeof AuthenticatedDashboardIndexRoute
-  '/api/public/hls/$': typeof ApiPublicHlsSplatRoute
-  '/blast': typeof BlastRouteWithChildren
-  '/blast/': typeof BlastIndexRoute
-  '/blast/campaigns': typeof BlastCampaignsRoute
-  '/blast/campaigns/$id': typeof BlastCampaignsIdRoute
-  '/blast/dashboard': typeof BlastDashboardRoute
-  '/blast/create': typeof BlastCreateRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -226,27 +191,23 @@ export interface FileRoutesByTo {
   '/app/my-list': typeof AppMyListRoute
   '/app/scenes': typeof AppScenesRoute
   '/app/search': typeof AppSearchRoute
+  '/blast/campaigns': typeof BlastCampaignsRouteWithChildren
+  '/blast/create': typeof BlastCreateRoute
+  '/blast/dashboard': typeof BlastDashboardRoute
   '/app': typeof AppIndexRoute
+  '/blast': typeof BlastIndexRoute
   '/watch/$id': typeof AuthenticatedWatchIdRoute
-  '/api/mux/webhook': typeof ApiMuxWebhookRoute
-  '/api/public/geo': typeof ApiPublicGeoRoute
-  '/api/public/roku-feed': typeof ApiPublicRokuFeedRoute
-  '/api/stripe/webhook': typeof ApiStripeWebhookRoute
   '/app/title/$id': typeof AppTitleIdRoute
+  '/blast/campaigns/$id': typeof BlastCampaignsIdRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
   '/dashboard': typeof AuthenticatedDashboardIndexRoute
-  '/api/public/hls/$': typeof ApiPublicHlsSplatRoute
-  '/blast': typeof BlastIndexRoute
-  '/blast/campaigns': typeof BlastCampaignsRoute
-  '/blast/campaigns/$id': typeof BlastCampaignsIdRoute
-  '/blast/dashboard': typeof BlastDashboardRoute
-  '/blast/create': typeof BlastCreateRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/app': typeof AppRouteWithChildren
+  '/blast': typeof BlastRouteWithChildren
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
   '/redirect': typeof RedirectRoute
@@ -257,28 +218,23 @@ export interface FileRoutesById {
   '/app/my-list': typeof AppMyListRoute
   '/app/scenes': typeof AppScenesRoute
   '/app/search': typeof AppSearchRoute
+  '/blast/campaigns': typeof BlastCampaignsRouteWithChildren
+  '/blast/create': typeof BlastCreateRoute
+  '/blast/dashboard': typeof BlastDashboardRoute
   '/app/': typeof AppIndexRoute
+  '/blast/': typeof BlastIndexRoute
   '/_authenticated/watch/$id': typeof AuthenticatedWatchIdRoute
-  '/api/mux/webhook': typeof ApiMuxWebhookRoute
-  '/api/public/geo': typeof ApiPublicGeoRoute
-  '/api/public/roku-feed': typeof ApiPublicRokuFeedRoute
-  '/api/stripe/webhook': typeof ApiStripeWebhookRoute
   '/app/title/$id': typeof AppTitleIdRoute
+  '/blast/campaigns/$id': typeof BlastCampaignsIdRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
   '/_authenticated/dashboard/': typeof AuthenticatedDashboardIndexRoute
-  '/api/public/hls/$': typeof ApiPublicHlsSplatRoute
-  '/blast': typeof BlastRouteWithChildren
-  '/blast/': typeof BlastIndexRoute
-  '/blast/campaigns': typeof BlastCampaignsRoute
-  '/blast/campaigns/$id': typeof BlastCampaignsIdRoute
-  '/blast/dashboard': typeof BlastDashboardRoute
-  '/blast/create': typeof BlastCreateRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/app'
+    | '/blast'
     | '/forgot-password'
     | '/login'
     | '/redirect'
@@ -289,22 +245,16 @@ export interface FileRouteTypes {
     | '/app/my-list'
     | '/app/scenes'
     | '/app/search'
+    | '/blast/campaigns'
+    | '/blast/create'
+    | '/blast/dashboard'
     | '/app/'
+    | '/blast/'
     | '/watch/$id'
-    | '/api/mux/webhook'
-    | '/api/public/geo'
-    | '/api/public/roku-feed'
-    | '/api/stripe/webhook'
     | '/app/title/$id'
+    | '/blast/campaigns/$id'
     | '/admin/'
     | '/dashboard/'
-    | '/api/public/hls/$'
-    | '/blast'
-    | '/blast/'
-    | '/blast/campaigns'
-    | '/blast/campaigns/$id'
-    | '/blast/dashboard'
-    | '/blast/create'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -317,26 +267,22 @@ export interface FileRouteTypes {
     | '/app/my-list'
     | '/app/scenes'
     | '/app/search'
+    | '/blast/campaigns'
+    | '/blast/create'
+    | '/blast/dashboard'
     | '/app'
+    | '/blast'
     | '/watch/$id'
-    | '/api/mux/webhook'
-    | '/api/public/geo'
-    | '/api/public/roku-feed'
-    | '/api/stripe/webhook'
     | '/app/title/$id'
+    | '/blast/campaigns/$id'
     | '/admin'
     | '/dashboard'
-    | '/api/public/hls/$'
-    | '/blast'
-    | '/blast/campaigns'
-    | '/blast/campaigns/$id'
-    | '/blast/dashboard'
-    | '/blast/create'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/app'
+    | '/blast'
     | '/forgot-password'
     | '/login'
     | '/redirect'
@@ -347,22 +293,16 @@ export interface FileRouteTypes {
     | '/app/my-list'
     | '/app/scenes'
     | '/app/search'
+    | '/blast/campaigns'
+    | '/blast/create'
+    | '/blast/dashboard'
     | '/app/'
+    | '/blast/'
     | '/_authenticated/watch/$id'
-    | '/api/mux/webhook'
-    | '/api/public/geo'
-    | '/api/public/roku-feed'
-    | '/api/stripe/webhook'
     | '/app/title/$id'
+    | '/blast/campaigns/$id'
     | '/_authenticated/admin/'
     | '/_authenticated/dashboard/'
-    | '/api/public/hls/$'
-    | '/blast'
-    | '/blast/'
-    | '/blast/campaigns'
-    | '/blast/campaigns/$id'
-    | '/blast/dashboard'
-    | '/blast/create'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -375,30 +315,7 @@ export interface RootRouteChildren {
   RedirectRoute: typeof RedirectRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   SignupRoute: typeof SignupRoute
-  ApiMuxWebhookRoute: typeof ApiMuxWebhookRoute
-  ApiPublicGeoRoute: typeof ApiPublicGeoRoute
-  ApiPublicRokuFeedRoute: typeof ApiPublicRokuFeedRoute
-  ApiStripeWebhookRoute: typeof ApiStripeWebhookRoute
-  ApiPublicHlsSplatRoute: typeof ApiPublicHlsSplatRoute
 }
-
-interface BlastRouteChildren {
-  BlastIndexRoute: typeof BlastIndexRoute
-  BlastCampaignsRoute: typeof BlastCampaignsRoute
-  BlastCampaignsIdRoute: typeof BlastCampaignsIdRoute
-  BlastDashboardRoute: typeof BlastDashboardRoute
-  BlastCreateRoute: typeof BlastCreateRoute
-}
-
-const BlastRouteChildren: BlastRouteChildren = {
-  BlastIndexRoute: BlastIndexRoute,
-  BlastCampaignsRoute: BlastCampaignsRoute,
-  BlastCampaignsIdRoute: BlastCampaignsIdRoute,
-  BlastDashboardRoute: BlastDashboardRoute,
-  BlastCreateRoute: BlastCreateRoute,
-}
-
-const BlastRouteWithChildren = BlastRoute._addFileChildren(BlastRouteChildren)
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
@@ -437,6 +354,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ForgotPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/blast': {
+      id: '/blast'
+      path: '/blast'
+      fullPath: '/blast'
+      preLoaderRoute: typeof BlastRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/app': {
       id: '/app'
       path: '/app'
@@ -458,6 +382,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/blast/': {
+      id: '/blast/'
+      path: '/'
+      fullPath: '/blast/'
+      preLoaderRoute: typeof BlastIndexRouteImport
+      parentRoute: typeof BlastRoute
+    }
     '/app/': {
       id: '/app/'
       path: '/'
@@ -465,11 +396,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppIndexRouteImport
       parentRoute: typeof AppRoute
     }
+    '/blast/dashboard': {
+      id: '/blast/dashboard'
+      path: '/dashboard'
+      fullPath: '/blast/dashboard'
+      preLoaderRoute: typeof BlastDashboardRouteImport
+      parentRoute: typeof BlastRoute
+    }
+    '/blast/create': {
+      id: '/blast/create'
+      path: '/create'
+      fullPath: '/blast/create'
+      preLoaderRoute: typeof BlastCreateRouteImport
+      parentRoute: typeof BlastRoute
+    }
+    '/blast/campaigns': {
+      id: '/blast/campaigns'
+      path: '/campaigns'
+      fullPath: '/blast/campaigns'
+      preLoaderRoute: typeof BlastCampaignsRouteImport
+      parentRoute: typeof BlastRoute
+    }
     '/app/search': {
       id: '/app/search'
       path: '/search'
       fullPath: '/app/search'
       preLoaderRoute: typeof AppSearchRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/scenes': {
+      id: '/app/scenes'
+      path: '/scenes'
+      fullPath: '/app/scenes'
+      preLoaderRoute: typeof AppScenesRouteImport
       parentRoute: typeof AppRoute
     }
     '/app/my-list': {
@@ -484,13 +443,6 @@ declare module '@tanstack/react-router' {
       path: '/live'
       fullPath: '/app/live'
       preLoaderRoute: typeof AppLiveRouteImport
-      parentRoute: typeof AppRoute
-    }
-    '/app/scenes': {
-      id: '/app/scenes'
-      path: '/scenes'
-      fullPath: '/app/scenes'
-      preLoaderRoute: typeof AppScenesRouteImport
       parentRoute: typeof AppRoute
     }
     '/_authenticated/admin': {
@@ -514,6 +466,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/blast/campaigns/$id': {
+      id: '/blast/campaigns/$id'
+      path: '/$id'
+      fullPath: '/blast/campaigns/$id'
+      preLoaderRoute: typeof BlastCampaignsIdRouteImport
+      parentRoute: typeof BlastCampaignsRoute
+    }
     '/app/title/$id': {
       id: '/app/title/$id'
       path: '/title/$id'
@@ -521,89 +480,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppTitleIdRouteImport
       parentRoute: typeof AppRoute
     }
-    '/api/stripe/webhook': {
-      id: '/api/stripe/webhook'
-      path: '/api/stripe/webhook'
-      fullPath: '/api/stripe/webhook'
-      preLoaderRoute: typeof ApiStripeWebhookRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/public/roku-feed': {
-      id: '/api/public/roku-feed'
-      path: '/api/public/roku-feed'
-      fullPath: '/api/public/roku-feed'
-      preLoaderRoute: typeof ApiPublicRokuFeedRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/public/geo': {
-      id: '/api/public/geo'
-      path: '/api/public/geo'
-      fullPath: '/api/public/geo'
-      preLoaderRoute: typeof ApiPublicGeoRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/mux/webhook': {
-      id: '/api/mux/webhook'
-      path: '/api/mux/webhook'
-      fullPath: '/api/mux/webhook'
-      preLoaderRoute: typeof ApiMuxWebhookRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/_authenticated/watch/$id': {
       id: '/_authenticated/watch/$id'
       path: '/watch/$id'
       fullPath: '/watch/$id'
       preLoaderRoute: typeof AuthenticatedWatchIdRouteImport
       parentRoute: typeof AuthenticatedRoute
-    }
-    '/api/public/hls/$': {
-      id: '/api/public/hls/$'
-      path: '/api/public/hls/$'
-      fullPath: '/api/public/hls/$'
-      preLoaderRoute: typeof ApiPublicHlsSplatRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/blast': {
-      id: '/blast'
-      path: '/blast'
-      fullPath: '/blast'
-      preLoaderRoute: typeof BlastRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/blast/': {
-      id: '/blast/'
-      path: '/'
-      fullPath: '/blast/'
-      preLoaderRoute: typeof BlastIndexRouteImport
-      parentRoute: typeof BlastRoute
-    }
-    '/blast/campaigns': {
-      id: '/blast/campaigns'
-      path: '/campaigns'
-      fullPath: '/blast/campaigns'
-      preLoaderRoute: typeof BlastCampaignsRouteImport
-      parentRoute: typeof BlastRoute
-    }
-    '/blast/campaigns/$id': {
-      id: '/blast/campaigns/$id'
-      path: '/campaigns/$id'
-      fullPath: '/blast/campaigns/$id'
-      preLoaderRoute: typeof BlastCampaignsIdRouteImport
-      parentRoute: typeof BlastRoute
-    }
-    '/blast/dashboard': {
-      id: '/blast/dashboard'
-      path: '/dashboard'
-      fullPath: '/blast/dashboard'
-      preLoaderRoute: typeof BlastDashboardRouteImport
-      parentRoute: typeof BlastRoute
-    }
-    '/blast/create': {
-      id: '/blast/create'
-      path: '/create'
-      fullPath: '/blast/create'
-      preLoaderRoute: typeof BlastCreateRouteImport
-      parentRoute: typeof BlastRoute
     }
   }
 }
@@ -655,6 +537,34 @@ const AppRouteChildren: AppRouteChildren = {
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
 
+interface BlastCampaignsRouteChildren {
+  BlastCampaignsIdRoute: typeof BlastCampaignsIdRoute
+}
+
+const BlastCampaignsRouteChildren: BlastCampaignsRouteChildren = {
+  BlastCampaignsIdRoute: BlastCampaignsIdRoute,
+}
+
+const BlastCampaignsRouteWithChildren = BlastCampaignsRoute._addFileChildren(
+  BlastCampaignsRouteChildren,
+)
+
+interface BlastRouteChildren {
+  BlastCampaignsRoute: typeof BlastCampaignsRouteWithChildren
+  BlastCreateRoute: typeof BlastCreateRoute
+  BlastDashboardRoute: typeof BlastDashboardRoute
+  BlastIndexRoute: typeof BlastIndexRoute
+}
+
+const BlastRouteChildren: BlastRouteChildren = {
+  BlastCampaignsRoute: BlastCampaignsRouteWithChildren,
+  BlastCreateRoute: BlastCreateRoute,
+  BlastDashboardRoute: BlastDashboardRoute,
+  BlastIndexRoute: BlastIndexRoute,
+}
+
+const BlastRouteWithChildren = BlastRoute._addFileChildren(BlastRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
@@ -665,21 +575,7 @@ const rootRouteChildren: RootRouteChildren = {
   RedirectRoute: RedirectRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   SignupRoute: SignupRoute,
-  ApiMuxWebhookRoute: ApiMuxWebhookRoute,
-  ApiPublicGeoRoute: ApiPublicGeoRoute,
-  ApiPublicRokuFeedRoute: ApiPublicRokuFeedRoute,
-  ApiStripeWebhookRoute: ApiStripeWebhookRoute,
-  ApiPublicHlsSplatRoute: ApiPublicHlsSplatRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { createStart } from '@tanstack/react-start'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-  }
-}
